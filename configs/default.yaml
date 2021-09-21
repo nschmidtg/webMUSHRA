@@ -1,77 +1,602 @@
-testname: webMUSHRA Example
-testId: default_example
+# Likert multi stimulus page 1 stimuli, 4 responses
+
+testname: User Study on Foreground Speech and Background Music Source Separation
+testId: MOS_music_source_separation
 bufferSize: 2048
 stopOnErrors: true
 showButtonPreviousPage: true
 remoteService: service/write.php
-
-
 pages:
-    - type: generic
-      id: first_page
-      name: Welcome
-      content: Welcome to webMUSHRA!       
-    - type: mushra
-      id: trial1
-      name: MUSHRA
-      content: This training shows how to use our user interface. Please perform the underlined instructions to proceed with the training session. Reminder: In a MUSHRA listening test you are asked to rate the Basic Audio Quality (BAQ) of each condition.<br/>Basic Audio Quality is a single and global attribute that is used to judge any and all detected differences between the reference and the condition.
-      showWaveform: true
-      enableLooping: true 
-      reference: configs/resources/audio/mono_ref.wav
-      createAnchor35: true
-      createAnchor70: true
-      stimuli:
-          C1: configs/resources/audio/mono_c1.wav
-          C2: configs/resources/audio/mono_c2.wav
-          C3: configs/resources/audio/mono_c3.wav
-    - 
-          - random
-          - type: mushra
-            id: trial_random_1
-            name: MUSHRA - Random 2
-            content: Due to randomization, this page will be either the second MUSHRA page or the third MUSHRA page.
-            enableLooping: true 
-            reference: configs/resources/audio/mono_ref.wav
-            createAnchor35: false
-            createAnchor70: false
-            stimuli:
-                C1: configs/resources/audio/mono_c1.wav
-                C2: configs/resources/audio/mono_c2.wav
-                C3: configs/resources/audio/mono_c3.wav          
-          - type: mushra
-            id: trial_random_2
-            name: MUSHRA - Random 1
-            content: Due to randomization, this page will be either the second MUSHRA page or the third MUSHRA page.
-            enableLooping: true 
-            reference: configs/resources/audio/mono_ref.wav
-            createAnchor35: false
-            createAnchor70: false
-            stimuli:
-                C1: configs/resources/audio/mono_c1.wav
-                C2: configs/resources/audio/mono_c2.wav
-                C3: configs/resources/audio/mono_c3.wav          
-    - type: finish
-      name: Thank you
-      content: Thank you for attending!
-      showResults: true
-      writeResults: true
-      questionnaire:
-          - type: text
-            label: eMail
-            name: email
-          - type: number
-            label: Age
-            name: age
-            min: 0
-            max: 100
-            default: 30
-          - type: likert
-            name: gender
-            label: Gender
-            response:
-             - value: female
-               label: Female
-             - value: male
-               label: Male
-             - value: other
-               label: Other
+  - type: generic
+    id: instructions
+    name: Basic Instructions
+    content: This foreground speech and background music source separation perceptual test takes around <b>20 minutes</b>.<br>&nbsp;<br>It is <b>mandatory</b> to use a decent playback system (studio monitors or good headphones)!<br>&nbsp;<br>&nbsp;<br><b>The input mixture is the only reference available</b>.<br>&nbsp;<br>In case you need timbral or temporal cues for your rating, the mixture serves this purpose.<br>&nbsp;<br>&nbsp;<br>You will be asked to rate the <b>GLOBAL QUALITY of the separations</b> for speech and background music from a podcast.<br>&nbsp;<br><b>GLOBAL QUALITY</b> takes into account both <b>(i)</b> the suppression of other sources; and <b>(ii)</b> the lack of distortions. <br>&nbsp;<br>&nbsp;<br>Please, <b>finish and submit the results</b>. Otherwise, they won't be send.
+  
+  # ex_1
+  # speech evaluation
+  - type: likert_multi_stimulus
+    id: MOS_speech_1
+    name: MOS vocals: speech 1
+    mustRate: true
+    content: Rate the <b>GLOBAL QUALITY</b> of the <b>SPEECH</b> extracted from this podcast:<br>&nbsp;<br><audio controls><source src="configs/resources/audio/ConvTasNet/ex_1/mixture.wav" type="audio/ogg">Your browser does not support the audio element.</audio><br>&nbsp;<br><b>GLOBAL QUALITY</b> takes into account <b>both</b> <b>(i)</b> the <b>SUPPRESSION</b> of other sources; and <b>(ii)</b> the lack of <b>DISTORTION</b>. Consider the following scale:<br>&nbsp;<br><b>Bad</b> - <b>(i)</b> Very intrusive interferences from other sources; and <b>(ii)</b> degraded audio.<br><b>Poor</b> - <b>(i)</b> Somewhat intrusive interferences from other sources; and <b>(ii)</b> fairly degraded audio.<br><b>Fair</b> - <b>(i)</b> Noticeable but not intrusive interferences from other sources; and <b>(ii)</b> somewhat degraded audio.<br><b>Good</b> - <b>(i)</b> Somewhat noticeable interferences from other sources; and <b>(ii)</b> minimally degraded audio.<br><b>Excellent</b> - <b>(i)</b> Unnoticeable interferences from other sources; and <b>(ii)</b> not degraded audio.<br>
+    stimuli:
+      convtasnet: configs/resources/audio/ConvTasNet/ex_1/s0_estimate.wav
+      unet: configs/resources/audio/UNet/ex_1/s0_estimate.wav
+    response:
+      - value: 1
+        label: Bad
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 2
+        label: Poor
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 3
+        label: Fair
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 4
+        label: Good
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 5
+        label: Excellent
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+  # background music evaluation
+  - type: likert_multi_stimulus
+    id: MOS_music_1
+    name: MOS music: music 1
+    mustRate: true
+    content: Rate the <b>GLOBAL QUALITY</b> of the <b>BACKGROUND MUSIC</b> extracted from this podcast:<br>&nbsp;<br><audio controls><source src="configs/resources/audio/ConvTasNet/ex_1/mixture.wav" type="audio/ogg">Your browser does not support the audio element.</audio><br>&nbsp;<br><b>GLOBAL QUALITY</b> takes into account <b>both</b> <b>(i)</b> the <b>SUPPRESSION</b> of other sources; and <b>(ii)</b> the lack of <b>DISTORTION</b>. Consider the following scale:<br>&nbsp;<br><b>Bad</b> - <b>(i)</b> Very intrusive interferences from other sources; and <b>(ii)</b> degraded audio.<br><b>Poor</b> - <b>(i)</b> Somewhat intrusive interferences from other sources; and <b>(ii)</b> fairly degraded audio.<br><b>Fair</b> - <b>(i)</b> Noticeable but not intrusive interferences from other sources; and <b>(ii)</b> somewhat degraded audio.<br><b>Good</b> - <b>(i)</b> Somewhat noticeable interferences from other sources; and <b>(ii)</b> minimally degraded audio.<br><b>Excellent</b> - <b>(i)</b> Unnoticeable interferences from other sources; and <b>(ii)</b> not degraded audio.<br>
+    stimuli:
+      convtasnet: configs/resources/audio/ConvTasNet/ex_1/s1_estimate.wav
+      unet: configs/resources/audio/UNet/ex_1/s1_estimate.wav
+    response:
+      - value: 1
+        label: Bad
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 2
+        label: Poor
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 3
+        label: Fair
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 4
+        label: Good
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 5
+        label: Excellent
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+  
+  # ex_2
+  # speech evaluation
+  - type: likert_multi_stimulus
+    id: MOS_speech_2
+    name: MOS vocals: speech 2
+    mustRate: true
+    content: Rate the <b>GLOBAL QUALITY</b> of the <b>SPEECH</b> extracted from this podcast:<br>&nbsp;<br><audio controls><source src="configs/resources/audio/ConvTasNet/ex_2/mixture.wav" type="audio/ogg">Your browser does not support the audio element.</audio><br>&nbsp;<br><b>GLOBAL QUALITY</b> takes into account <b>both</b> <b>(i)</b> the <b>SUPPRESSION</b> of other sources; and <b>(ii)</b> the lack of <b>DISTORTION</b>. Consider the following scale:<br>&nbsp;<br><b>Bad</b> - <b>(i)</b> Very intrusive interferences from other sources; and <b>(ii)</b> degraded audio.<br><b>Poor</b> - <b>(i)</b> Somewhat intrusive interferences from other sources; and <b>(ii)</b> fairly degraded audio.<br><b>Fair</b> - <b>(i)</b> Noticeable but not intrusive interferences from other sources; and <b>(ii)</b> somewhat degraded audio.<br><b>Good</b> - <b>(i)</b> Somewhat noticeable interferences from other sources; and <b>(ii)</b> minimally degraded audio.<br><b>Excellent</b> - <b>(i)</b> Unnoticeable interferences from other sources; and <b>(ii)</b> not degraded audio.<br>
+    stimuli:
+      convtasnet: configs/resources/audio/ConvTasNet/ex_2/s0_estimate.wav
+      unet: configs/resources/audio/UNet/ex_2/s0_estimate.wav
+    response:
+      - value: 1
+        label: Bad
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 2
+        label: Poor
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 3
+        label: Fair
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 4
+        label: Good
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 5
+        label: Excellent
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+  # background music evaluation
+  - type: likert_multi_stimulus
+    id: MOS_music_2
+    name: MOS music: music 2
+    mustRate: true
+    content: Rate the <b>GLOBAL QUALITY</b> of the <b>BACKGROUND MUSIC</b> extracted from this podcast:<br>&nbsp;<br><audio controls><source src="configs/resources/audio/ConvTasNet/ex_2/mixture.wav" type="audio/ogg">Your browser does not support the audio element.</audio><br>&nbsp;<br><b>GLOBAL QUALITY</b> takes into account <b>both</b> <b>(i)</b> the <b>SUPPRESSION</b> of other sources; and <b>(ii)</b> the lack of <b>DISTORTION</b>. Consider the following scale:<br>&nbsp;<br><b>Bad</b> - <b>(i)</b> Very intrusive interferences from other sources; and <b>(ii)</b> degraded audio.<br><b>Poor</b> - <b>(i)</b> Somewhat intrusive interferences from other sources; and <b>(ii)</b> fairly degraded audio.<br><b>Fair</b> - <b>(i)</b> Noticeable but not intrusive interferences from other sources; and <b>(ii)</b> somewhat degraded audio.<br><b>Good</b> - <b>(i)</b> Somewhat noticeable interferences from other sources; and <b>(ii)</b> minimally degraded audio.<br><b>Excellent</b> - <b>(i)</b> Unnoticeable interferences from other sources; and <b>(ii)</b> not degraded audio.<br>
+    stimuli:
+      convtasnet: configs/resources/audio/ConvTasNet/ex_2/s1_estimate.wav
+      unet: configs/resources/audio/UNet/ex_2/s1_estimate.wav
+    response:
+      - value: 1
+        label: Bad
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 2
+        label: Poor
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 3
+        label: Fair
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 4
+        label: Good
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 5
+        label: Excellent
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+
+  # ex_3
+  # speech evaluation
+  - type: likert_multi_stimulus
+    id: MOS_speech_3
+    name: MOS vocals: speech 3
+    mustRate: true
+    content: Rate the <b>GLOBAL QUALITY</b> of the <b>SPEECH</b> extracted from this podcast:<br>&nbsp;<br><audio controls><source src="configs/resources/audio/ConvTasNet/ex_3/mixture.wav" type="audio/ogg">Your browser does not support the audio element.</audio><br>&nbsp;<br><b>GLOBAL QUALITY</b> takes into account <b>both</b> <b>(i)</b> the <b>SUPPRESSION</b> of other sources; and <b>(ii)</b> the lack of <b>DISTORTION</b>. Consider the following scale:<br>&nbsp;<br><b>Bad</b> - <b>(i)</b> Very intrusive interferences from other sources; and <b>(ii)</b> degraded audio.<br><b>Poor</b> - <b>(i)</b> Somewhat intrusive interferences from other sources; and <b>(ii)</b> fairly degraded audio.<br><b>Fair</b> - <b>(i)</b> Noticeable but not intrusive interferences from other sources; and <b>(ii)</b> somewhat degraded audio.<br><b>Good</b> - <b>(i)</b> Somewhat noticeable interferences from other sources; and <b>(ii)</b> minimally degraded audio.<br><b>Excellent</b> - <b>(i)</b> Unnoticeable interferences from other sources; and <b>(ii)</b> not degraded audio.<br>
+    stimuli:
+      convtasnet: configs/resources/audio/ConvTasNet/ex_3/s0_estimate.wav
+      unet: configs/resources/audio/UNet/ex_3/s0_estimate.wav
+    response:
+      - value: 1
+        label: Bad
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 2
+        label: Poor
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 3
+        label: Fair
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 4
+        label: Good
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 5
+        label: Excellent
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+  # background music evaluation
+  - type: likert_multi_stimulus
+    id: MOS_music_3
+    name: MOS music: music 3
+    mustRate: true
+    content: Rate the <b>GLOBAL QUALITY</b> of the <b>BACKGROUND MUSIC</b> extracted from this podcast:<br>&nbsp;<br><audio controls><source src="configs/resources/audio/ConvTasNet/ex_3/mixture.wav" type="audio/ogg">Your browser does not support the audio element.</audio><br>&nbsp;<br><b>GLOBAL QUALITY</b> takes into account <b>both</b> <b>(i)</b> the <b>SUPPRESSION</b> of other sources; and <b>(ii)</b> the lack of <b>DISTORTION</b>. Consider the following scale:<br>&nbsp;<br><b>Bad</b> - <b>(i)</b> Very intrusive interferences from other sources; and <b>(ii)</b> degraded audio.<br><b>Poor</b> - <b>(i)</b> Somewhat intrusive interferences from other sources; and <b>(ii)</b> fairly degraded audio.<br><b>Fair</b> - <b>(i)</b> Noticeable but not intrusive interferences from other sources; and <b>(ii)</b> somewhat degraded audio.<br><b>Good</b> - <b>(i)</b> Somewhat noticeable interferences from other sources; and <b>(ii)</b> minimally degraded audio.<br><b>Excellent</b> - <b>(i)</b> Unnoticeable interferences from other sources; and <b>(ii)</b> not degraded audio.<br>
+    stimuli:
+      convtasnet: configs/resources/audio/ConvTasNet/ex_3/s1_estimate.wav
+      unet: configs/resources/audio/UNet/ex_3/s1_estimate.wav
+    response:
+      - value: 1
+        label: Bad
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 2
+        label: Poor
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 3
+        label: Fair
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 4
+        label: Good
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 5
+        label: Excellent
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+
+  # ex_4
+  # speech evaluation
+  - type: likert_multi_stimulus
+    id: MOS_speech_4
+    name: MOS vocals: speech 4
+    mustRate: true
+    content: Rate the <b>GLOBAL QUALITY</b> of the <b>SPEECH</b> extracted from this podcast:<br>&nbsp;<br><audio controls><source src="configs/resources/audio/ConvTasNet/ex_4/mixture.wav" type="audio/ogg">Your browser does not support the audio element.</audio><br>&nbsp;<br><b>GLOBAL QUALITY</b> takes into account <b>both</b> <b>(i)</b> the <b>SUPPRESSION</b> of other sources; and <b>(ii)</b> the lack of <b>DISTORTION</b>. Consider the following scale:<br>&nbsp;<br><b>Bad</b> - <b>(i)</b> Very intrusive interferences from other sources; and <b>(ii)</b> degraded audio.<br><b>Poor</b> - <b>(i)</b> Somewhat intrusive interferences from other sources; and <b>(ii)</b> fairly degraded audio.<br><b>Fair</b> - <b>(i)</b> Noticeable but not intrusive interferences from other sources; and <b>(ii)</b> somewhat degraded audio.<br><b>Good</b> - <b>(i)</b> Somewhat noticeable interferences from other sources; and <b>(ii)</b> minimally degraded audio.<br><b>Excellent</b> - <b>(i)</b> Unnoticeable interferences from other sources; and <b>(ii)</b> not degraded audio.<br>
+    stimuli:
+      convtasnet: configs/resources/audio/ConvTasNet/ex_4/s0_estimate.wav
+      unet: configs/resources/audio/UNet/ex_4/s0_estimate.wav
+    response:
+      - value: 1
+        label: Bad
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 2
+        label: Poor
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 3
+        label: Fair
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 4
+        label: Good
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 5
+        label: Excellent
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+  # background music evaluation
+  - type: likert_multi_stimulus
+    id: MOS_music_4
+    name: MOS music: music 4
+    mustRate: true
+    content: Rate the <b>GLOBAL QUALITY</b> of the <b>BACKGROUND MUSIC</b> extracted from this podcast:<br>&nbsp;<br><audio controls><source src="configs/resources/audio/ConvTasNet/ex_4/mixture.wav" type="audio/ogg">Your browser does not support the audio element.</audio><br>&nbsp;<br><b>GLOBAL QUALITY</b> takes into account <b>both</b> <b>(i)</b> the <b>SUPPRESSION</b> of other sources; and <b>(ii)</b> the lack of <b>DISTORTION</b>. Consider the following scale:<br>&nbsp;<br><b>Bad</b> - <b>(i)</b> Very intrusive interferences from other sources; and <b>(ii)</b> degraded audio.<br><b>Poor</b> - <b>(i)</b> Somewhat intrusive interferences from other sources; and <b>(ii)</b> fairly degraded audio.<br><b>Fair</b> - <b>(i)</b> Noticeable but not intrusive interferences from other sources; and <b>(ii)</b> somewhat degraded audio.<br><b>Good</b> - <b>(i)</b> Somewhat noticeable interferences from other sources; and <b>(ii)</b> minimally degraded audio.<br><b>Excellent</b> - <b>(i)</b> Unnoticeable interferences from other sources; and <b>(ii)</b> not degraded audio.<br>
+    stimuli:
+      convtasnet: configs/resources/audio/ConvTasNet/ex_4/s1_estimate.wav
+      unet: configs/resources/audio/UNet/ex_4/s1_estimate.wav
+    response:
+      - value: 1
+        label: Bad
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 2
+        label: Poor
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 3
+        label: Fair
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 4
+        label: Good
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 5
+        label: Excellent
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+
+  # ex_5
+  # speech evaluation
+  - type: likert_multi_stimulus
+    id: MOS_speech_5
+    name: MOS vocals: speech 5
+    mustRate: true
+    content: Rate the <b>GLOBAL QUALITY</b> of the <b>SPEECH</b> extracted from this podcast:<br>&nbsp;<br><audio controls><source src="configs/resources/audio/ConvTasNet/ex_5/mixture.wav" type="audio/ogg">Your browser does not support the audio element.</audio><br>&nbsp;<br><b>GLOBAL QUALITY</b> takes into account <b>both</b> <b>(i)</b> the <b>SUPPRESSION</b> of other sources; and <b>(ii)</b> the lack of <b>DISTORTION</b>. Consider the following scale:<br>&nbsp;<br><b>Bad</b> - <b>(i)</b> Very intrusive interferences from other sources; and <b>(ii)</b> degraded audio.<br><b>Poor</b> - <b>(i)</b> Somewhat intrusive interferences from other sources; and <b>(ii)</b> fairly degraded audio.<br><b>Fair</b> - <b>(i)</b> Noticeable but not intrusive interferences from other sources; and <b>(ii)</b> somewhat degraded audio.<br><b>Good</b> - <b>(i)</b> Somewhat noticeable interferences from other sources; and <b>(ii)</b> minimally degraded audio.<br><b>Excellent</b> - <b>(i)</b> Unnoticeable interferences from other sources; and <b>(ii)</b> not degraded audio.<br>
+    stimuli:
+      convtasnet: configs/resources/audio/ConvTasNet/ex_5/s0_estimate.wav
+      unet: configs/resources/audio/UNet/ex_5/s0_estimate.wav
+    response:
+      - value: 1
+        label: Bad
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 2
+        label: Poor
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 3
+        label: Fair
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 4
+        label: Good
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 5
+        label: Excellent
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+  # background music evaluation
+  - type: likert_multi_stimulus
+    id: MOS_music_5
+    name: MOS music: music 5
+    mustRate: true
+    content: Rate the <b>GLOBAL QUALITY</b> of the <b>BACKGROUND MUSIC</b> extracted from this podcast:<br>&nbsp;<br><audio controls><source src="configs/resources/audio/ConvTasNet/ex_5/mixture.wav" type="audio/ogg">Your browser does not support the audio element.</audio><br>&nbsp;<br><b>GLOBAL QUALITY</b> takes into account <b>both</b> <b>(i)</b> the <b>SUPPRESSION</b> of other sources; and <b>(ii)</b> the lack of <b>DISTORTION</b>. Consider the following scale:<br>&nbsp;<br><b>Bad</b> - <b>(i)</b> Very intrusive interferences from other sources; and <b>(ii)</b> degraded audio.<br><b>Poor</b> - <b>(i)</b> Somewhat intrusive interferences from other sources; and <b>(ii)</b> fairly degraded audio.<br><b>Fair</b> - <b>(i)</b> Noticeable but not intrusive interferences from other sources; and <b>(ii)</b> somewhat degraded audio.<br><b>Good</b> - <b>(i)</b> Somewhat noticeable interferences from other sources; and <b>(ii)</b> minimally degraded audio.<br><b>Excellent</b> - <b>(i)</b> Unnoticeable interferences from other sources; and <b>(ii)</b> not degraded audio.<br>
+    stimuli:
+      convtasnet: configs/resources/audio/ConvTasNet/ex_5/s1_estimate.wav
+      unet: configs/resources/audio/UNet/ex_5/s1_estimate.wav
+    response:
+      - value: 1
+        label: Bad
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 2
+        label: Poor
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 3
+        label: Fair
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 4
+        label: Good
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 5
+        label: Excellent
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+
+  # ex_6
+  # speech evaluation
+  - type: likert_multi_stimulus
+    id: MOS_speech_6
+    name: MOS vocals: speech 6
+    mustRate: true
+    content: Rate the <b>GLOBAL QUALITY</b> of the <b>SPEECH</b> extracted from this podcast:<br>&nbsp;<br><audio controls><source src="configs/resources/audio/ConvTasNet/ex_6/mixture.wav" type="audio/ogg">Your browser does not support the audio element.</audio><br>&nbsp;<br><b>GLOBAL QUALITY</b> takes into account <b>both</b> <b>(i)</b> the <b>SUPPRESSION</b> of other sources; and <b>(ii)</b> the lack of <b>DISTORTION</b>. Consider the following scale:<br>&nbsp;<br><b>Bad</b> - <b>(i)</b> Very intrusive interferences from other sources; and <b>(ii)</b> degraded audio.<br><b>Poor</b> - <b>(i)</b> Somewhat intrusive interferences from other sources; and <b>(ii)</b> fairly degraded audio.<br><b>Fair</b> - <b>(i)</b> Noticeable but not intrusive interferences from other sources; and <b>(ii)</b> somewhat degraded audio.<br><b>Good</b> - <b>(i)</b> Somewhat noticeable interferences from other sources; and <b>(ii)</b> minimally degraded audio.<br><b>Excellent</b> - <b>(i)</b> Unnoticeable interferences from other sources; and <b>(ii)</b> not degraded audio.<br>
+    stimuli:
+      convtasnet: configs/resources/audio/ConvTasNet/ex_6/s0_estimate.wav
+      unet: configs/resources/audio/UNet/ex_6/s0_estimate.wav
+    response:
+      - value: 1
+        label: Bad
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 2
+        label: Poor
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 3
+        label: Fair
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 4
+        label: Good
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 5
+        label: Excellent
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+  # background music evaluation
+  - type: likert_multi_stimulus
+    id: MOS_music_6
+    name: MOS music: music 6
+    mustRate: true
+    content: Rate the <b>GLOBAL QUALITY</b> of the <b>BACKGROUND MUSIC</b> extracted from this podcast:<br>&nbsp;<br><audio controls><source src="configs/resources/audio/ConvTasNet/ex_6/mixture.wav" type="audio/ogg">Your browser does not support the audio element.</audio><br>&nbsp;<br><b>GLOBAL QUALITY</b> takes into account <b>both</b> <b>(i)</b> the <b>SUPPRESSION</b> of other sources; and <b>(ii)</b> the lack of <b>DISTORTION</b>. Consider the following scale:<br>&nbsp;<br><b>Bad</b> - <b>(i)</b> Very intrusive interferences from other sources; and <b>(ii)</b> degraded audio.<br><b>Poor</b> - <b>(i)</b> Somewhat intrusive interferences from other sources; and <b>(ii)</b> fairly degraded audio.<br><b>Fair</b> - <b>(i)</b> Noticeable but not intrusive interferences from other sources; and <b>(ii)</b> somewhat degraded audio.<br><b>Good</b> - <b>(i)</b> Somewhat noticeable interferences from other sources; and <b>(ii)</b> minimally degraded audio.<br><b>Excellent</b> - <b>(i)</b> Unnoticeable interferences from other sources; and <b>(ii)</b> not degraded audio.<br>
+    stimuli:
+      convtasnet: configs/resources/audio/ConvTasNet/ex_6/s1_estimate.wav
+      unet: configs/resources/audio/UNet/ex_6/s1_estimate.wav
+    response:
+      - value: 1
+        label: Bad
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 2
+        label: Poor
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 3
+        label: Fair
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 4
+        label: Good
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 5
+        label: Excellent
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+
+  # ex_7
+  # speech evaluation
+  - type: likert_multi_stimulus
+    id: MOS_speech_7
+    name: MOS vocals: speech 7
+    mustRate: true
+    content: Rate the <b>GLOBAL QUALITY</b> of the <b>SPEECH</b> extracted from this podcast:<br>&nbsp;<br><audio controls><source src="configs/resources/audio/ConvTasNet/ex_7/mixture.wav" type="audio/ogg">Your browser does not support the audio element.</audio><br>&nbsp;<br><b>GLOBAL QUALITY</b> takes into account <b>both</b> <b>(i)</b> the <b>SUPPRESSION</b> of other sources; and <b>(ii)</b> the lack of <b>DISTORTION</b>. Consider the following scale:<br>&nbsp;<br><b>Bad</b> - <b>(i)</b> Very intrusive interferences from other sources; and <b>(ii)</b> degraded audio.<br><b>Poor</b> - <b>(i)</b> Somewhat intrusive interferences from other sources; and <b>(ii)</b> fairly degraded audio.<br><b>Fair</b> - <b>(i)</b> Noticeable but not intrusive interferences from other sources; and <b>(ii)</b> somewhat degraded audio.<br><b>Good</b> - <b>(i)</b> Somewhat noticeable interferences from other sources; and <b>(ii)</b> minimally degraded audio.<br><b>Excellent</b> - <b>(i)</b> Unnoticeable interferences from other sources; and <b>(ii)</b> not degraded audio.<br>
+    stimuli:
+      convtasnet: configs/resources/audio/ConvTasNet/ex_7/s0_estimate.wav
+      unet: configs/resources/audio/UNet/ex_7/s0_estimate.wav
+    response:
+      - value: 1
+        label: Bad
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 2
+        label: Poor
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 3
+        label: Fair
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 4
+        label: Good
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 5
+        label: Excellent
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+  # background music evaluation
+  - type: likert_multi_stimulus
+    id: MOS_music_7
+    name: MOS music: music 7
+    mustRate: true
+    content: Rate the <b>GLOBAL QUALITY</b> of the <b>BACKGROUND MUSIC</b> extracted from this podcast:<br>&nbsp;<br><audio controls><source src="configs/resources/audio/ConvTasNet/ex_7/mixture.wav" type="audio/ogg">Your browser does not support the audio element.</audio><br>&nbsp;<br><b>GLOBAL QUALITY</b> takes into account <b>both</b> <b>(i)</b> the <b>SUPPRESSION</b> of other sources; and <b>(ii)</b> the lack of <b>DISTORTION</b>. Consider the following scale:<br>&nbsp;<br><b>Bad</b> - <b>(i)</b> Very intrusive interferences from other sources; and <b>(ii)</b> degraded audio.<br><b>Poor</b> - <b>(i)</b> Somewhat intrusive interferences from other sources; and <b>(ii)</b> fairly degraded audio.<br><b>Fair</b> - <b>(i)</b> Noticeable but not intrusive interferences from other sources; and <b>(ii)</b> somewhat degraded audio.<br><b>Good</b> - <b>(i)</b> Somewhat noticeable interferences from other sources; and <b>(ii)</b> minimally degraded audio.<br><b>Excellent</b> - <b>(i)</b> Unnoticeable interferences from other sources; and <b>(ii)</b> not degraded audio.<br>
+    stimuli:
+      convtasnet: configs/resources/audio/ConvTasNet/ex_7/s1_estimate.wav
+      unet: configs/resources/audio/UNet/ex_7/s1_estimate.wav
+    response:
+      - value: 1
+        label: Bad
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 2
+        label: Poor
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 3
+        label: Fair
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 4
+        label: Good
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 5
+        label: Excellent
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+
+  # ex_8
+  # speech evaluation
+  - type: likert_multi_stimulus
+    id: MOS_speech_8
+    name: MOS vocals: speech 8
+    mustRate: true
+    content: Rate the <b>GLOBAL QUALITY</b> of the <b>SPEECH</b> extracted from this podcast:<br>&nbsp;<br><audio controls><source src="configs/resources/audio/ConvTasNet/ex_8/mixture.wav" type="audio/ogg">Your browser does not support the audio element.</audio><br>&nbsp;<br><b>GLOBAL QUALITY</b> takes into account <b>both</b> <b>(i)</b> the <b>SUPPRESSION</b> of other sources; and <b>(ii)</b> the lack of <b>DISTORTION</b>. Consider the following scale:<br>&nbsp;<br><b>Bad</b> - <b>(i)</b> Very intrusive interferences from other sources; and <b>(ii)</b> degraded audio.<br><b>Poor</b> - <b>(i)</b> Somewhat intrusive interferences from other sources; and <b>(ii)</b> fairly degraded audio.<br><b>Fair</b> - <b>(i)</b> Noticeable but not intrusive interferences from other sources; and <b>(ii)</b> somewhat degraded audio.<br><b>Good</b> - <b>(i)</b> Somewhat noticeable interferences from other sources; and <b>(ii)</b> minimally degraded audio.<br><b>Excellent</b> - <b>(i)</b> Unnoticeable interferences from other sources; and <b>(ii)</b> not degraded audio.<br>
+    stimuli:
+      convtasnet: configs/resources/audio/ConvTasNet/ex_8/s0_estimate.wav
+      unet: configs/resources/audio/UNet/ex_8/s0_estimate.wav
+    response:
+      - value: 1
+        label: Bad
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 2
+        label: Poor
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 3
+        label: Fair
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 4
+        label: Good
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 5
+        label: Excellent
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+  # background music evaluation
+  - type: likert_multi_stimulus
+    id: MOS_music_8
+    name: MOS music: music 8
+    mustRate: true
+    content: Rate the <b>GLOBAL QUALITY</b> of the <b>BACKGROUND MUSIC</b> extracted from this podcast:<br>&nbsp;<br><audio controls><source src="configs/resources/audio/ConvTasNet/ex_8/mixture.wav" type="audio/ogg">Your browser does not support the audio element.</audio><br>&nbsp;<br><b>GLOBAL QUALITY</b> takes into account <b>both</b> <b>(i)</b> the <b>SUPPRESSION</b> of other sources; and <b>(ii)</b> the lack of <b>DISTORTION</b>. Consider the following scale:<br>&nbsp;<br><b>Bad</b> - <b>(i)</b> Very intrusive interferences from other sources; and <b>(ii)</b> degraded audio.<br><b>Poor</b> - <b>(i)</b> Somewhat intrusive interferences from other sources; and <b>(ii)</b> fairly degraded audio.<br><b>Fair</b> - <b>(i)</b> Noticeable but not intrusive interferences from other sources; and <b>(ii)</b> somewhat degraded audio.<br><b>Good</b> - <b>(i)</b> Somewhat noticeable interferences from other sources; and <b>(ii)</b> minimally degraded audio.<br><b>Excellent</b> - <b>(i)</b> Unnoticeable interferences from other sources; and <b>(ii)</b> not degraded audio.<br>
+    stimuli:
+      convtasnet: configs/resources/audio/ConvTasNet/ex_8/s1_estimate.wav
+      unet: configs/resources/audio/UNet/ex_8/s1_estimate.wav
+    response:
+      - value: 1
+        label: Bad
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 2
+        label: Poor
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 3
+        label: Fair
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 4
+        label: Good
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+      - value: 5
+        label: Excellent
+        img: configs/resources/images/star_off.png
+        imgSelected: configs/resources/images/star_on.png
+        imgHigherResponseSelected: configs/resources/images/star_on.png
+
+
+  # finish page        
+  - type: finish
+    name: Thank you
+    content: Thank you for attending! Please, introduce your name (or invented name) for an easy user tracking.
+    showResults: false
+    writeResults: true
+    questionnaire:
+      - type: text
+        label: Name
+        name: name
+        optional: false
